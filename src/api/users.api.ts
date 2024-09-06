@@ -1,18 +1,25 @@
 import { axiosInstance } from '../config/api.config';
+import { isUnauthenticated } from '../utils/apiErrors';
 
 export const fetchCurrentUser = async ({
   queryKey
 }: {
   queryKey: ['whoami'];
 }) => {
-  return await axiosInstance.get<{
-    user: {
-      id: string;
-      username: string;
-    };
-  }>('users', {
-    validateStatus: (status) => {
-      return (status >= 200 && status < 300) || status === 401;
+  try {
+    const response = await axiosInstance.get<{
+      user: {
+        id: string;
+        username: string;
+      };
+    }>('users');
+
+    return response.data.user;
+  } catch (error) {
+    if (isUnauthenticated(error)) {
+      return null;
     }
-  });
+
+    throw error;
+  }
 };

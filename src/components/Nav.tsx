@@ -23,7 +23,7 @@ const Nav = () => {
     );
   }
 
-  if (!user.data?.data?.user) {
+  if (!user.data) {
     return (
       <nav>
         <button>Sign Up</button>
@@ -32,7 +32,7 @@ const Nav = () => {
     );
   }
 
-  const { id, username } = user.data.data.user;
+  const { id, username } = user.data;
 
   return (
     <nav>
