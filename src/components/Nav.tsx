@@ -1,7 +1,35 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentUser } from '../api/users.api';
+import { useModalContext } from './Modal/ModalContext';
+import { MouseEvent } from 'react';
 
 const Nav = () => {
+  const { dispatch } = useModalContext();
+
+  const handleSignUp = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    dispatch({ type: 'open', component: <></> }); // TODO: pass Sing Up component
+  };
+
+  const handleLogIn = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    dispatch({
+      type: 'open',
+      component: <></> // TODO: pass Log In component
+    });
+  };
+
+  const handleNewResource = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    dispatch({
+      type: 'open',
+      component: <></> // TODO: pass NewResource component
+    });
+  };
+
   const user = useQuery({
     queryKey: ['whoami'],
     queryFn: fetchCurrentUser
@@ -26,8 +54,8 @@ const Nav = () => {
   if (!user.data) {
     return (
       <nav>
-        <button>Sign Up</button>
-        <button>Log In</button>
+        <button onClick={handleSignUp}>Sign Up</button>
+        <button onClick={handleLogIn}>Log In</button>
       </nav>
     );
   }
@@ -38,7 +66,7 @@ const Nav = () => {
     <nav>
       <h2 title={id}>{username}</h2>
       <button>Log Out</button>
-      <button>New Resource</button>
+      <button onClick={handleNewResource}>New Resource</button>
     </nav>
   );
 };
