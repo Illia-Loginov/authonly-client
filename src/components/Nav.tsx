@@ -1,10 +1,24 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchCurrentUser } from '../api/users.api';
 import { useModalContext } from './Modal/ModalContext';
 import { MouseEvent } from 'react';
+import { logOut } from '../api/sessions.api';
 
 const Nav = () => {
   const { dispatch } = useModalContext();
+
+  const queryClient = useQueryClient();
+
+  const logOutMutation = useMutation({
+    mutationFn: logOut,
+    onError: (error) => {
+      console.log('TODO: handle unexpected errors', error);
+      throw error;
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(['whoami'], null);
+    }
+  });
 
   const handleSignUp = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -19,6 +33,12 @@ const Nav = () => {
       type: 'open',
       component: <></> // TODO: pass Log In component
     });
+  };
+
+  const handleLogOut = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    logOutMutation.mutate();
   };
 
   const handleNewResource = (e: MouseEvent<HTMLButtonElement>) => {
@@ -65,7 +85,7 @@ const Nav = () => {
   return (
     <nav>
       <h2 title={id}>{username}</h2>
-      <button>Log Out</button>
+      <button onClick={handleLogOut}>Log Out</button>
       <button onClick={handleNewResource}>New Resource</button>
     </nav>
   );
