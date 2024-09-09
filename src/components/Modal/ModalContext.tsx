@@ -8,8 +8,10 @@ import {
   useContext,
   useReducer
 } from 'react';
+import SignUp from './SignUp';
+import LogIn from './LogIn';
 
-type ModalTypes = never; // TODO: add components that can be inside modal
+type ModalTypes = typeof SignUp | typeof LogIn;
 type ModalComponent = ReactElement<ComponentProps<ModalTypes>, ModalTypes>;
 
 type ModalAction =

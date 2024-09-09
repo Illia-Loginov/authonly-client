@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchCurrentUser } from '../api/users.api';
 import { useModalContext } from './Modal/ModalContext';
 import { MouseEvent } from 'react';
+import SignUp from './Modal/SignUp';
 import { logOut } from '../api/sessions.api';
+import LogIn from './Modal/LogIn';
 
 const Nav = () => {
   const { dispatch } = useModalContext();
@@ -23,16 +25,13 @@ const Nav = () => {
   const handleSignUp = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch({ type: 'open', component: <></> }); // TODO: pass Sing Up component
+    dispatch({ type: 'open', component: <SignUp /> });
   };
 
   const handleLogIn = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch({
-      type: 'open',
-      component: <></> // TODO: pass Log In component
-    });
+    dispatch({ type: 'open', component: <LogIn /> });
   };
 
   const handleLogOut = (e: MouseEvent<HTMLButtonElement>) => {
