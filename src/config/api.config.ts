@@ -4,5 +4,6 @@ import axios from 'axios';
 const { VITE_SERVER_URL: serverUrl } = validateApiConfig();
 
 export const axiosInstance = axios.create({
-  baseURL: serverUrl
+  baseURL: serverUrl,
+  withCredentials: true
 });
