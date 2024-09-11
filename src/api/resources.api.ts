@@ -37,3 +37,11 @@ export const editResource = async (
 
   return response.data.resource;
 };
+
+export const deleteResource = async (id: Resource['id']) => {
+  const response = await axios.delete<{
+    resource: Pick<Resource, 'id' | 'value' | 'created_at'>;
+  }>(`resources/${id}`);
+
+  return response.data.resource;
+};

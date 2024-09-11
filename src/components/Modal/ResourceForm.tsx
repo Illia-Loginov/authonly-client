@@ -51,6 +51,7 @@ const ResourceForm = ({
       });
 
       if (isUnauthenticated(error) || isForbidden(error)) {
+        // TODO: Cancel mutation and open log in modal
         setIssueMessages({
           globalIssue: error.response.data.message
         });

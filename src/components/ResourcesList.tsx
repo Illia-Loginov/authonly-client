@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchResources } from '../api/resources.api';
 import { fetchCurrentUser } from '../api/users.api';
-import Resource from './Resource';
+import ResourceCard from './ResourceCard';
 import { useErrorContext } from '../context/ErrorContext';
 
 const ResourcesList = () => {
@@ -39,7 +39,7 @@ const ResourcesList = () => {
     <section>
       <h1 className="text-3xl">Resources</h1>
       {(resources.data || []).map((resource) => (
-        <Resource
+        <ResourceCard
           key={resource.id}
           id={resource.id}
           value={resource.value}
