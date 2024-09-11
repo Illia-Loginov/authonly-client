@@ -1,22 +1,16 @@
 interface ResourceProps {
   id: string;
   value: string;
-  owner_id: string;
-  owner_username: string;
+  owner: string;
+  isOwner: boolean;
   created_at: Date;
 }
 
-const Resource = ({
-  id,
-  value,
-  owner_id,
-  owner_username,
-  created_at
-}: ResourceProps) => {
+const Resource = ({ id, value, owner, isOwner, created_at }: ResourceProps) => {
   return (
     <div title={id}>
       <p>{value}</p>
-      <sub title={owner_id}>{owner_username}</sub>
+      <sub>{owner + (isOwner ? ' (you)' : '')}</sub>
       <sub>{created_at.toString()}</sub>
     </div>
   );
