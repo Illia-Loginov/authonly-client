@@ -6,6 +6,7 @@ import SignUp from './Modal/SignUp';
 import { logOut } from '../api/sessions.api';
 import LogIn from './Modal/LogIn';
 import { useErrorContext } from '../context/ErrorContext';
+import NewResource from './Modal/NewResource';
 
 const Nav = () => {
   const { dispatch: modalDispatch } = useModalContext();
@@ -41,15 +42,6 @@ const Nav = () => {
     logOutMutation.mutate();
   };
 
-  const handleNewResource = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    modalDispatch({
-      type: 'open',
-      component: <></> // TODO: pass NewResource component
-    });
-  };
-
   const user = useQuery({
     queryKey: ['users'],
     queryFn: fetchCurrentUser,
@@ -78,6 +70,17 @@ const Nav = () => {
   }
 
   const { id, username } = user.data;
+
+  const handleNewResource = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    modalDispatch({
+      type: 'open',
+      component: (
+        <NewResource userData={{ owner_id: id, owner_username: username }} />
+      )
+    });
+  };
 
   return (
     <nav>

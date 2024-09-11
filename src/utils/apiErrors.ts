@@ -11,6 +11,16 @@ export const isUnauthenticated = (
   );
 };
 
+export const isForbidden = (
+  error: unknown
+): error is PickRequired<AxiosError<{ message: string }>, 'response'> => {
+  return (
+    error instanceof AxiosError &&
+    error.response?.status === 403 &&
+    typeof error.response.data?.message === 'string'
+  );
+};
+
 export const isBadRequest = <TPayload extends Record<string, any>>(
   error: unknown
 ): error is PickRequired<

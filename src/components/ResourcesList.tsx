@@ -43,7 +43,8 @@ const ResourcesList = () => {
           key={resource.id}
           id={resource.id}
           value={resource.value}
-          owner={resource.owner_username}
+          owner_id={resource.owner_id}
+          owner_username={resource.owner_username}
           isOwner={!user.isPending && user.data?.id === resource.owner_id}
           created_at={resource.created_at}
         />

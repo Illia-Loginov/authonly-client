@@ -10,8 +10,14 @@ import {
 } from 'react';
 import SignUp from '../components/Modal/SignUp';
 import LogIn from '../components/Modal/LogIn';
+import NewResource from '../components/Modal/NewResource';
+import EditResource from '../components/Modal/EditResource';
 
-type ModalTypes = typeof SignUp | typeof LogIn;
+type ModalTypes =
+  | typeof SignUp
+  | typeof LogIn
+  | typeof NewResource
+  | typeof EditResource;
 type ModalComponent = ReactElement<ComponentProps<ModalTypes>, ModalTypes>;
 
 type ModalAction =
