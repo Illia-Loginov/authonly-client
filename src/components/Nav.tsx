@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchCurrentUser } from '../api/users.api';
-import { useModalContext } from './Modal/ModalContext';
+import { useModalContext } from '../context/ModalContext';
 import { MouseEvent } from 'react';
 import SignUp from './Modal/SignUp';
 import { logOut } from '../api/sessions.api';

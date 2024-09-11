@@ -1,5 +1,5 @@
 import Modal from './Modal/Modal';
-import { ModalProvider } from './Modal/ModalContext';
+import { ModalProvider } from '../context/ModalContext';
 import Nav from './Nav';
 import ResourcesList from './ResourcesList';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

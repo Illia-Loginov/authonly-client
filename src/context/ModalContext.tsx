@@ -8,8 +8,8 @@ import {
   useContext,
   useReducer
 } from 'react';
-import SignUp from './SignUp';
-import LogIn from './LogIn';
+import SignUp from '../components/Modal/SignUp';
+import LogIn from '../components/Modal/LogIn';
 
 type ModalTypes = typeof SignUp | typeof LogIn;
 type ModalComponent = ReactElement<ComponentProps<ModalTypes>, ModalTypes>;

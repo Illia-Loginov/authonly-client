@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { useModalContext } from './ModalContext';
+import { useModalContext } from '../../context/ModalContext';
 
 const Modal = () => {
   const { modalContent, dispatch } = useModalContext();
