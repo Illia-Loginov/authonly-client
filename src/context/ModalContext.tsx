@@ -36,11 +36,7 @@ interface ModalContextValue {
 
 const ModalContext = createContext<ModalContextValue | null>(null);
 
-const modalReducer = (content: null | ModalComponent, action: ModalAction) => {
-  if (!!content === (action.type === 'open')) {
-    throw new Error('Invalid reducer action');
-  }
-
+const modalReducer = (_: null | ModalComponent, action: ModalAction) => {
   if (action.type === 'close') {
     return null;
   }

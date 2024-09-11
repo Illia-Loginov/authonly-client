@@ -5,6 +5,8 @@ import { deleteResource } from '../api/resources.api';
 import { useErrorContext } from '../context/ErrorContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Resource } from '../types/Resource';
+import { isForbidden, isUnauthenticated } from '../utils/apiErrors';
+import LogIn from './Modal/LogIn';
 
 interface ResourceCardProps {
   id: string;
@@ -49,11 +51,12 @@ const ResourceCard = ({
     const mutation = useMutation({
       mutationFn: deleteResource,
       onError: (error) => {
-        // if (isUnauthenticated(error) || isForbidden(error)) {
-        //   // TODO: Cancel mutation and open log in modal
-        // }
-
-        errorDispatch({ type: 'throw', error });
+        if (isUnauthenticated(error) || isForbidden(error)) {
+          queryClient.setQueryData(['users'], null);
+          modalDispatch({ type: 'open', component: <LogIn /> });
+        } else {
+          errorDispatch({ type: 'throw', error });
+        }
       },
       onSuccess: (deletedResource) => {
         queryClient.setQueryData(

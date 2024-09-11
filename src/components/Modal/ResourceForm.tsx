@@ -9,6 +9,7 @@ import {
   isUnauthenticated
 } from '../../utils/apiErrors';
 import { toCapitalized } from '../../utils/stringDisplayFormatting';
+import LogIn from './LogIn';
 
 interface ResourceFormProps {
   displayName: string;
@@ -51,10 +52,8 @@ const ResourceForm = ({
       });
 
       if (isUnauthenticated(error) || isForbidden(error)) {
-        // TODO: Cancel mutation and open log in modal
-        setIssueMessages({
-          globalIssue: error.response.data.message
-        });
+        queryClient.setQueryData(['users'], null);
+        modalDispatch({ type: 'open', component: <LogIn /> });
       } else if (isBadRequest(error)) {
         if (error.response.data.message === 'Invalid input') {
           setIssueMessages({
