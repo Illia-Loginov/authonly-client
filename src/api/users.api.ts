@@ -5,7 +5,7 @@ import { isUnauthenticated } from '../utils/apiErrors';
 export const fetchCurrentUser = async ({
   queryKey
 }: {
-  queryKey: ['whoami'];
+  queryKey: ['users'];
 }) => {
   try {
     const response = await axios.get<{

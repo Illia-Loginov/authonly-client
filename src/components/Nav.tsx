@@ -18,7 +18,7 @@ const Nav = () => {
       throw error;
     },
     onSuccess: () => {
-      queryClient.setQueryData(['whoami'], null);
+      queryClient.setQueryData(['users'], null);
     }
   });
 
@@ -50,7 +50,7 @@ const Nav = () => {
   };
 
   const user = useQuery({
-    queryKey: ['whoami'],
+    queryKey: ['users'],
     queryFn: fetchCurrentUser
   });
 

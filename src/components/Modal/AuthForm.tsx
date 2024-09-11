@@ -59,7 +59,7 @@ const AuthForm = ({ displayName, mutationFn }: AuthFormProps) => {
       }
     },
     onSuccess: (user) => {
-      queryClient.setQueryData(['whoami'], user);
+      queryClient.setQueryData(['users'], user);
 
       dispatch({ type: 'close' });
     }
