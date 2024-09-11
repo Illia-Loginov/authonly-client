@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isBadRequest, isUnauthenticated } from '../../utils/apiErrors';
 import { useModalContext } from '../../context/ModalContext';
 import { toCapitalized } from '../../utils/stringDisplayFormatting';
+import { useErrorContext } from '../../context/ErrorContext';
 
 interface AuthFormProps {
   displayName: string;
@@ -26,7 +27,8 @@ const AuthForm = ({ displayName, mutationFn }: AuthFormProps) => {
     globalIssue?: string;
   }>({});
 
-  const { dispatch } = useModalContext();
+  const { dispatch: modalDispatch } = useModalContext();
+  const { dispatch: errorDispatch } = useErrorContext();
 
   const queryClient = useQueryClient();
 
@@ -54,14 +56,13 @@ const AuthForm = ({ displayName, mutationFn }: AuthFormProps) => {
           });
         }
       } else {
-        console.log('TODO: handle unexpected errors', error);
-        throw error;
+        errorDispatch({ type: 'throw', error });
       }
     },
     onSuccess: (user) => {
       queryClient.setQueryData(['users'], user);
 
-      dispatch({ type: 'close' });
+      modalDispatch({ type: 'close' });
     }
   });
 

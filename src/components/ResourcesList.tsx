@@ -2,30 +2,35 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchResources } from '../api/resources.api';
 import { fetchCurrentUser } from '../api/users.api';
 import Resource from './Resource';
+import { useErrorContext } from '../context/ErrorContext';
 
 const ResourcesList = () => {
+  const { dispatch: errorDispatch } = useErrorContext();
+
   const user = useQuery({
     queryKey: ['users'],
-    queryFn: fetchCurrentUser
+    queryFn: fetchCurrentUser,
+    throwOnError: (error, _) => {
+      errorDispatch({ type: 'throw', error });
+
+      return false;
+    }
   });
 
   const resources = useQuery({
     queryKey: ['resources', { sort: { created_at: 'desc' } }],
-    queryFn: fetchResources
+    queryFn: fetchResources,
+    throwOnError: (error, _) => {
+      errorDispatch({ type: 'throw', error });
+
+      return false;
+    }
   });
 
   if (resources.isPending) {
     return (
       <section>
-        <h2 className="text-2xl">Loading...</h2>
-      </section>
-    );
-  }
-
-  if (resources.error || user.error) {
-    return (
-      <section>
-        <h2 className="text-2xl">TODO: handle unexpected errors</h2>
+        <h2 className="text-2xl">Loading resources...</h2>
       </section>
     );
   }
@@ -33,7 +38,7 @@ const ResourcesList = () => {
   return (
     <section>
       <h1 className="text-3xl">Resources</h1>
-      {resources.data.map((resource) => (
+      {(resources.data || []).map((resource) => (
         <Resource
           key={resource.id}
           id={resource.id}

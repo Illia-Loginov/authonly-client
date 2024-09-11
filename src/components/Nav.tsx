@@ -5,17 +5,18 @@ import { MouseEvent } from 'react';
 import SignUp from './Modal/SignUp';
 import { logOut } from '../api/sessions.api';
 import LogIn from './Modal/LogIn';
+import { useErrorContext } from '../context/ErrorContext';
 
 const Nav = () => {
-  const { dispatch } = useModalContext();
+  const { dispatch: modalDispatch } = useModalContext();
+  const { dispatch: errorDispatch } = useErrorContext();
 
   const queryClient = useQueryClient();
 
   const logOutMutation = useMutation({
     mutationFn: logOut,
     onError: (error) => {
-      console.log('TODO: handle unexpected errors', error);
-      throw error;
+      errorDispatch({ type: 'throw', error });
     },
     onSuccess: () => {
       queryClient.setQueryData(['users'], null);
@@ -25,13 +26,13 @@ const Nav = () => {
   const handleSignUp = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch({ type: 'open', component: <SignUp /> });
+    modalDispatch({ type: 'open', component: <SignUp /> });
   };
 
   const handleLogIn = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch({ type: 'open', component: <LogIn /> });
+    modalDispatch({ type: 'open', component: <LogIn /> });
   };
 
   const handleLogOut = (e: MouseEvent<HTMLButtonElement>) => {
@@ -43,7 +44,7 @@ const Nav = () => {
   const handleNewResource = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch({
+    modalDispatch({
       type: 'open',
       component: <></> // TODO: pass NewResource component
     });
@@ -51,21 +52,18 @@ const Nav = () => {
 
   const user = useQuery({
     queryKey: ['users'],
-    queryFn: fetchCurrentUser
+    queryFn: fetchCurrentUser,
+    throwOnError: (error, _) => {
+      errorDispatch({ type: 'throw', error });
+
+      return false;
+    }
   });
 
   if (user.isPending) {
     return (
       <nav>
-        <h2>Loading...</h2>
-      </nav>
-    );
-  }
-
-  if (user.error) {
-    return (
-      <nav>
-        <h2>TODO: handle unexpected errors</h2>
+        <h2>Loading user data...</h2>
       </nav>
     );
   }
