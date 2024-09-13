@@ -1,8 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchResources } from '../api/resources.api';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { fetchResources, FetchResourcesQueryKey } from '../api/resources.api';
 import { fetchCurrentUser } from '../api/users.api';
 import ResourceCard from './ResourceCard';
 import { useErrorContext } from '../context/ErrorContext';
+import {
+  initialInfiniteQueryParams,
+  initialSort
+} from '../config/resources.config';
+import IntersectionTrigger from './IntersectionTrigger';
 
 const ResourcesList = () => {
   const { dispatch: errorDispatch } = useErrorContext();
@@ -17,9 +22,32 @@ const ResourcesList = () => {
     }
   });
 
-  const resources = useQuery({
-    queryKey: ['resources', { sort: { created_at: 'desc' } }],
+  const queryKey: FetchResourcesQueryKey = ['resources', { sort: initialSort }];
+
+  const resourcePages = useInfiniteQuery({
+    queryKey,
     queryFn: fetchResources,
+    initialPageParam: initialInfiniteQueryParams,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.isLast) {
+        return undefined;
+      }
+
+      return {
+        offset: lastPageParam.offset + initialInfiniteQueryParams.limit,
+        limit: initialInfiniteQueryParams.limit
+      };
+    },
+    getPreviousPageParam: (_, __, previousPageParam) => {
+      if (previousPageParam.offset === 0) {
+        return undefined;
+      }
+
+      return {
+        offset: previousPageParam.offset - initialInfiniteQueryParams.limit,
+        limit: initialInfiniteQueryParams.limit
+      };
+    },
     throwOnError: (error, _) => {
       errorDispatch({ type: 'throw', error });
 
@@ -27,18 +55,24 @@ const ResourcesList = () => {
     }
   });
 
-  if (resources.isPending) {
-    return (
-      <section>
-        <h2 className="text-2xl">Loading resources...</h2>
-      </section>
+  const resources = [];
+  for (const page of resourcePages.data?.pages || []) {
+    resources.push(...page.resources);
+  }
+
+  let nextElements = <></>;
+  if (resourcePages.isPending) {
+    nextElements = <h2 className="text-xl">Loading resources...</h2>;
+  } else if (resourcePages.hasNextPage) {
+    nextElements = (
+      <IntersectionTrigger onVisible={() => resourcePages.fetchNextPage()} />
     );
   }
 
   return (
     <section>
       <h1 className="text-3xl">Resources</h1>
-      {(resources.data || []).map((resource) => (
+      {resources.map((resource) => (
         <ResourceCard
           key={resource.id}
           id={resource.id}
@@ -49,6 +83,7 @@ const ResourcesList = () => {
           created_at={resource.created_at}
         />
       ))}
+      {nextElements}
     </section>
   );
 };

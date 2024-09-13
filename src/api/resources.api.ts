@@ -1,4 +1,5 @@
 import { axiosInstance as axios } from '../config/api.config';
+import { initialSort } from '../config/resources.config';
 import { Resource, ResourceSort } from '../types/Resource';
 
 export type FetchResourcesQueryKey = ['resources', { sort: ResourceSort }];
@@ -8,21 +9,30 @@ export type FetchResourcesQueryUpdate = (
 ) => Resource[] | undefined;
 
 export const fetchResources = async ({
-  queryKey
+  queryKey,
+  pageParam
 }: {
   queryKey: FetchResourcesQueryKey;
+  pageParam: {
+    offset: number;
+    limit: number;
+  };
 }) => {
   const { sort } = queryKey[1];
+  const { offset, limit } = pageParam;
 
   const response = await axios.get<{
     resources: Resource[];
+    isLast: boolean;
   }>('resources', {
     params: {
-      sort
+      sort,
+      offset,
+      limit
     }
   });
 
-  return response.data.resources;
+  return response.data;
 };
 
 export const createResource = async (payload: Pick<Resource, 'value'>) => {
@@ -54,7 +64,7 @@ export const deleteResource = async (id: Resource['id']) => {
 
 export const deleteCachedResource = (
   deletedId: Resource['id'],
-  sort: ResourceSort = { created_at: 'desc' }
+  sort: ResourceSort = initialSort
 ): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
   return [
     ['resources', { sort }],
@@ -65,7 +75,7 @@ export const deleteCachedResource = (
 
 export const addCachedResource = (
   newResource: Resource,
-  sort: ResourceSort = { created_at: 'desc' }
+  sort: ResourceSort = initialSort
 ): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
   return [
     ['resources', { sort }],
@@ -79,7 +89,7 @@ export const addCachedResource = (
 
 export const editCachedResource = (
   newResource: Resource,
-  sort: ResourceSort = { created_at: 'desc' }
+  sort: ResourceSort = initialSort
 ): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
   return [
     ['resources', { sort }],
@@ -92,7 +102,7 @@ export const editCachedResource = (
 
 export const deleteCachedResourcesByUser = (
   userId: Resource['owner_id'],
-  sort: ResourceSort = { created_at: 'desc' }
+  sort: ResourceSort = initialSort
 ): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
   return [
     ['resources', { sort }],
