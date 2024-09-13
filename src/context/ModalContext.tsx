@@ -12,12 +12,14 @@ import SignUp from '../components/Modal/SignUp';
 import LogIn from '../components/Modal/LogIn';
 import NewResource from '../components/Modal/NewResource';
 import EditResource from '../components/Modal/EditResource';
+import ConfirmationDialogModal from '../components/Modal/ConfirmationDialogModal';
 
 type ModalTypes =
   | typeof SignUp
   | typeof LogIn
   | typeof NewResource
-  | typeof EditResource;
+  | typeof EditResource
+  | typeof ConfirmationDialogModal;
 type ModalComponent = ReactElement<ComponentProps<ModalTypes>, ModalTypes>;
 
 type ModalAction =

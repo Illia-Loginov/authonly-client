@@ -29,3 +29,11 @@ export const signUp = async (payload: Pick<User, 'username' | 'password'>) => {
 
   return response.data.user;
 };
+
+export const deleteUser = async (id: User['id']) => {
+  const response = await axios.delete<{
+    user: Pick<User, 'id' | 'username' | 'created_at'>;
+  }>(`users/${id}`);
+
+  return response.data.user;
+};

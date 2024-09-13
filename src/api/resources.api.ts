@@ -89,3 +89,14 @@ export const editCachedResource = (
       )
   ];
 };
+
+export const deleteCachedResourcesByUser = (
+  userId: Resource['owner_id'],
+  sort: ResourceSort = { created_at: 'desc' }
+): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
+  return [
+    ['resources', { sort }],
+    (oldResources: Resource[] | undefined) =>
+      oldResources?.filter((resource) => resource.owner_id !== userId)
+  ];
+};

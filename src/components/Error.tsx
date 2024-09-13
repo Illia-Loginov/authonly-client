@@ -5,7 +5,7 @@ const Error = ({ error }: { error: Error }) => {
 
   return (
     <main className="h-screen w-full flex flex-col justify-center items-center">
-      <h1 className="text-3xl">Unexpected Error{code ? ` ${code}` : ''}</h1>
+      <h1 className="text-3xl">Error{code ? ` ${code}` : ''}</h1>
       <p>{error.message}</p>
     </main>
   );
