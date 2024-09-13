@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { Resource } from '../../types/Resource';
+import { Resource, ResourceSort } from '../../types/Resource';
 import { useModalContext } from '../../context/ModalContext';
 import { useErrorContext } from '../../context/ErrorContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,6 +10,10 @@ import {
 } from '../../utils/apiErrors';
 import { toCapitalized } from '../../utils/stringDisplayFormatting';
 import LogIn from './LogIn';
+import {
+  FetchResourcesQueryKey,
+  FetchResourcesQueryUpdate
+} from '../../api/resources.api';
 
 interface ResourceFormProps {
   displayName: string;
@@ -19,9 +23,9 @@ interface ResourceFormProps {
   defaultValue: Pick<Resource, 'value'>;
   userData: Pick<Resource, 'owner_id' | 'owner_username'>;
   queryUpdate: (
-    oldResources: Resource[] | undefined,
-    newResource: Resource
-  ) => Resource[] | undefined;
+    newResource: Resource,
+    sort?: ResourceSort
+  ) => [FetchResourcesQueryKey, FetchResourcesQueryUpdate];
 }
 
 const ResourceForm = ({
@@ -70,12 +74,10 @@ const ResourceForm = ({
     },
     onSuccess: (resource) => {
       queryClient.setQueryData(
-        ['resources', { sort: { created_at: 'desc' } }],
-        (oldResources: Resource[] | undefined): Resource[] | undefined =>
-          queryUpdate(oldResources, {
-            ...resource,
-            ...userData
-          })
+        ...queryUpdate({
+          ...resource,
+          ...userData
+        })
       );
 
       modalDispatch({ type: 'close' });

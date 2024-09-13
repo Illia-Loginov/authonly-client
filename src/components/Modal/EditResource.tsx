@@ -1,4 +1,4 @@
-import { editResource } from '../../api/resources.api';
+import { editCachedResource, editResource } from '../../api/resources.api';
 import { Resource } from '../../types/Resource';
 import ResourceForm from './ResourceForm';
 
@@ -7,15 +7,6 @@ interface EditResourceProps {
   defaultValue: Pick<Resource, 'value'>;
   id: Resource['id'];
 }
-
-const queryUpdate = (
-  oldResources: Resource[] | undefined,
-  newResource: Resource
-) => {
-  return oldResources?.map((resource) =>
-    resource.id === newResource.id ? newResource : resource
-  );
-};
 
 const EditResource = ({ userData, defaultValue, id }: EditResourceProps) => {
   return (
@@ -26,7 +17,7 @@ const EditResource = ({ userData, defaultValue, id }: EditResourceProps) => {
       }
       defaultValue={defaultValue}
       userData={userData}
-      queryUpdate={queryUpdate}
+      queryUpdate={editCachedResource}
     />
   );
 };

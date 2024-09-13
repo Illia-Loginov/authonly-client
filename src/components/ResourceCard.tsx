@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react';
 import { useModalContext } from '../context/ModalContext';
 import EditResource from './Modal/EditResource';
-import { deleteResource } from '../api/resources.api';
+import { deleteCachedResource, deleteResource } from '../api/resources.api';
 import { useErrorContext } from '../context/ErrorContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Resource } from '../types/Resource';
@@ -59,13 +59,7 @@ const ResourceCard = ({
         }
       },
       onSuccess: (deletedResource) => {
-        queryClient.setQueryData(
-          ['resources', { sort: { created_at: 'desc' } }],
-          (oldResources: Resource[] | undefined) =>
-            oldResources?.filter(
-              (resource) => resource.id !== deletedResource.id
-            )
-        );
+        queryClient.setQueryData(...deleteCachedResource(deletedResource.id));
       }
     });
 

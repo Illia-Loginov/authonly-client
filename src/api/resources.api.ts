@@ -1,10 +1,16 @@
 import { axiosInstance as axios } from '../config/api.config';
-import { Resource } from '../types/Resource';
+import { Resource, ResourceSort } from '../types/Resource';
+
+export type FetchResourcesQueryKey = ['resources', { sort: ResourceSort }];
+
+export type FetchResourcesQueryUpdate = (
+  oldResources: Resource[] | undefined
+) => Resource[] | undefined;
 
 export const fetchResources = async ({
   queryKey
 }: {
-  queryKey: ['resources', { sort: { created_at: 'desc' | 'asc' } }];
+  queryKey: FetchResourcesQueryKey;
 }) => {
   const { sort } = queryKey[1];
 
@@ -44,4 +50,42 @@ export const deleteResource = async (id: Resource['id']) => {
   }>(`resources/${id}`);
 
   return response.data.resource;
+};
+
+export const deleteCachedResource = (
+  deletedId: Resource['id'],
+  sort: ResourceSort = { created_at: 'desc' }
+): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
+  return [
+    ['resources', { sort }],
+    (oldResources: Resource[] | undefined) =>
+      oldResources?.filter((resource) => resource.id !== deletedId)
+  ];
+};
+
+export const addCachedResource = (
+  newResource: Resource,
+  sort: ResourceSort = { created_at: 'desc' }
+): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
+  return [
+    ['resources', { sort }],
+    (oldResources: Resource[] | undefined) =>
+      oldResources &&
+      (sort.created_at === 'desc'
+        ? [newResource, ...oldResources]
+        : [...oldResources, newResource])
+  ];
+};
+
+export const editCachedResource = (
+  newResource: Resource,
+  sort: ResourceSort = { created_at: 'desc' }
+): [FetchResourcesQueryKey, FetchResourcesQueryUpdate] => {
+  return [
+    ['resources', { sort }],
+    (oldResources: Resource[] | undefined) =>
+      oldResources?.map((resource) =>
+        resource.id === newResource.id ? newResource : resource
+      )
+  ];
 };

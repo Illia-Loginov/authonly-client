@@ -5,3 +5,7 @@ export interface Resource {
   owner_id: string;
   owner_username: string;
 }
+
+export interface ResourceSort {
+  created_at: 'asc' | 'desc';
+}
