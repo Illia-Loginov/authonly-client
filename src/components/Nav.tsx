@@ -8,12 +8,13 @@ import LogIn from './Modal/LogIn';
 import { useErrorContext } from '../context/ErrorContext';
 import NewResource from './Modal/NewResource';
 import ConfirmationDialogModal from './Modal/ConfirmationDialogModal';
-import { isForbidden, isUnauthenticated } from '../utils/apiErrors';
 import { deleteCachedResourcesByUser } from '../api/resources.api';
+import { useResourceSortContext } from '../context/ResourceSortContext';
 
 const Nav = () => {
   const { dispatch: modalDispatch } = useModalContext();
   const { dispatch: errorDispatch } = useErrorContext();
+  const { sort } = useResourceSortContext();
 
   const queryClient = useQueryClient();
 
@@ -97,7 +98,9 @@ const Nav = () => {
             mutationFn: () => deleteUser(id),
             onSuccess: () => {
               queryClient.setQueryData(['users'], null);
-              queryClient.setQueryData(...deleteCachedResourcesByUser(id));
+              queryClient.setQueryData(
+                ...deleteCachedResourcesByUser(id, sort)
+              );
               modalDispatch({ type: 'close' });
             },
             onError: (error) => {

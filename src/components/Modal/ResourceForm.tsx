@@ -14,6 +14,7 @@ import {
   FetchResourcesQueryKey,
   FetchResourcesQueryUpdate
 } from '../../api/resources.api';
+import { useResourceSortContext } from '../../context/ResourceSortContext';
 
 interface ResourceFormProps {
   displayName: string;
@@ -24,7 +25,7 @@ interface ResourceFormProps {
   userData: Pick<Resource, 'owner_id' | 'owner_username'>;
   queryUpdate: (
     newResource: Resource,
-    sort?: ResourceSort
+    sort: ResourceSort
   ) => [FetchResourcesQueryKey, FetchResourcesQueryUpdate];
 }
 
@@ -45,6 +46,7 @@ const ResourceForm = ({
 
   const { dispatch: modalDispatch } = useModalContext();
   const { dispatch: errorDispatch } = useErrorContext();
+  const { sort } = useResourceSortContext();
 
   const queryClient = useQueryClient();
 
@@ -74,10 +76,13 @@ const ResourceForm = ({
     },
     onSuccess: (resource) => {
       queryClient.setQueryData(
-        ...queryUpdate({
-          ...resource,
-          ...userData
-        })
+        ...queryUpdate(
+          {
+            ...resource,
+            ...userData
+          },
+          sort
+        )
       );
 
       modalDispatch({ type: 'close' });

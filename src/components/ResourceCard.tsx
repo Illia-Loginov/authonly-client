@@ -4,9 +4,9 @@ import EditResource from './Modal/EditResource';
 import { deleteCachedResource, deleteResource } from '../api/resources.api';
 import { useErrorContext } from '../context/ErrorContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Resource } from '../types/Resource';
 import { isForbidden, isUnauthenticated } from '../utils/apiErrors';
 import LogIn from './Modal/LogIn';
+import { useResourceSortContext } from '../context/ResourceSortContext';
 
 interface ResourceCardProps {
   id: string;
@@ -27,6 +27,7 @@ const ResourceCard = ({
 }: ResourceCardProps) => {
   const { dispatch: modalDispatch } = useModalContext();
   const { dispatch: errorDispatch } = useErrorContext();
+  const { sort } = useResourceSortContext();
 
   const queryClient = useQueryClient();
 
@@ -59,7 +60,9 @@ const ResourceCard = ({
         }
       },
       onSuccess: (deletedResource) => {
-        queryClient.setQueryData(...deleteCachedResource(deletedResource.id));
+        queryClient.setQueryData(
+          ...deleteCachedResource(deletedResource.id, sort)
+        );
       }
     });
 

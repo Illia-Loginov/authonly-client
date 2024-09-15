@@ -3,14 +3,14 @@ import { fetchResources, FetchResourcesQueryKey } from '../api/resources.api';
 import { fetchCurrentUser } from '../api/users.api';
 import ResourceCard from './ResourceCard';
 import { useErrorContext } from '../context/ErrorContext';
-import {
-  initialInfiniteQueryParams,
-  initialSort
-} from '../config/resources.config';
+import { initialInfiniteQueryParams } from '../config/resources.config';
 import IntersectionTrigger from './IntersectionTrigger';
+import SortToggle from './SortToggle';
+import { useResourceSortContext } from '../context/ResourceSortContext';
 
 const ResourcesList = () => {
   const { dispatch: errorDispatch } = useErrorContext();
+  const { sort } = useResourceSortContext();
 
   const user = useQuery({
     queryKey: ['users'],
@@ -22,7 +22,7 @@ const ResourcesList = () => {
     }
   });
 
-  const queryKey: FetchResourcesQueryKey = ['resources', { sort: initialSort }];
+  const queryKey: FetchResourcesQueryKey = ['resources', { sort }];
 
   const resourcePages = useInfiniteQuery({
     queryKey,
@@ -38,13 +38,13 @@ const ResourcesList = () => {
         limit: initialInfiniteQueryParams.limit
       };
     },
-    getPreviousPageParam: (_, __, previousPageParam) => {
-      if (previousPageParam.offset === 0) {
+    getPreviousPageParam: (_, __, currentPageParam) => {
+      if (currentPageParam.offset === 0) {
         return undefined;
       }
 
       return {
-        offset: previousPageParam.offset - initialInfiniteQueryParams.limit,
+        offset: currentPageParam.offset - initialInfiniteQueryParams.limit,
         limit: initialInfiniteQueryParams.limit
       };
     },
@@ -72,6 +72,7 @@ const ResourcesList = () => {
   return (
     <section>
       <h1 className="text-3xl">Resources</h1>
+      <SortToggle />
       {resources.map((resource) => (
         <ResourceCard
           key={resource.id}
