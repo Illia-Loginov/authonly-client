@@ -1,6 +1,6 @@
-import { ResourceSort } from '../types/Resource';
+import { ResourcePageParam, ResourceSort } from '../types/Resource';
 
-export const initialInfiniteQueryParams = {
+export const initialInfiniteQueryParams: ResourcePageParam = {
   offset: 0,
   limit: 25
 };

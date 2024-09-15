@@ -9,3 +9,13 @@ export interface Resource {
 export interface ResourceSort {
   created_at: 'asc' | 'desc';
 }
+
+export interface ResourcePageParam {
+  offset: number;
+  limit: number;
+}
+
+export interface ResourcePage {
+  resources: Resource[];
+  isLast: boolean;
+}
