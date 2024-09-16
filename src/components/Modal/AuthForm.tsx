@@ -5,6 +5,8 @@ import { isBadRequest, isUnauthenticated } from '../../utils/apiErrors';
 import { useModalContext } from '../../context/ModalContext';
 import { toCapitalized } from '../../utils/stringDisplayFormatting';
 import { useErrorContext } from '../../context/ErrorContext';
+import Button from '../Shared/Button';
+import InputSection from '../Shared/InputSection';
 
 interface AuthFormProps {
   displayName: string;
@@ -76,43 +78,41 @@ const AuthForm = ({ displayName, mutationFn }: AuthFormProps) => {
 
   return (
     <>
-      <h2 className="text-2xl mb-4">{displayName}</h2>
-      <form onSubmit={handleFormSubmit} className="flex flex-col w-64">
+      <h2 className="text-xl p-4 bg-green-700 text-green-200">{displayName}</h2>
+      <form onSubmit={handleFormSubmit} className="flex flex-col p-4 gap-4">
         {issueMessages.globalIssue && (
-          <p className="mb-4">{issueMessages.globalIssue}</p>
+          <p className="text-green-600 text-sm">{issueMessages.globalIssue}</p>
         )}
 
-        <label htmlFor="username">Username</label>
-        {issueMessages.username && <p>{issueMessages.username}</p>}
-        <input
-          className="mb-4"
+        <InputSection
+          label="Username"
           type="text"
           name="username"
           id="username"
           value={formData.username}
+          issue={issueMessages.username}
           onChange={(e) =>
             setFormData({ ...formData, username: e.target.value })
           }
           {...(mutation.isPending && { disabled: true })}
         />
 
-        <label htmlFor="password">Password</label>
-        {issueMessages.password && <p>{issueMessages.password}</p>}
-        <input
-          className="mb-4"
+        <InputSection
+          label="Password"
           type="password"
           name="password"
           id="password"
           value={formData.password}
+          issue={issueMessages.password}
           onChange={(e) =>
             setFormData({ ...formData, password: e.target.value })
           }
           {...(mutation.isPending && { disabled: true })}
         />
 
-        <button type="submit" {...(mutation.isPending && { disabled: true })}>
+        <Button {...(mutation.isPending && { disabled: true })}>
           {displayName}
-        </button>
+        </Button>
       </form>
     </>
   );

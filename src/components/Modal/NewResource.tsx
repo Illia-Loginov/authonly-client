@@ -9,7 +9,8 @@ interface NewResourceProps {
 const NewResource = ({ userData }: NewResourceProps) => {
   return (
     <ResourceForm
-      displayName="New Resource"
+      heading="New Resource"
+      buttonLabel="Create"
       mutationFn={createResource}
       defaultValue={{ value: '' }}
       userData={userData}

@@ -11,7 +11,8 @@ interface EditResourceProps {
 const EditResource = ({ userData, defaultValue, id }: EditResourceProps) => {
   return (
     <ResourceForm
-      displayName="Edit Resource"
+      heading="Edit Resource"
+      buttonLabel="Edit"
       mutationFn={(payload: Pick<Resource, 'value'>) =>
         editResource(payload, id)
       }

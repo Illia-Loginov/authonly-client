@@ -102,7 +102,7 @@ const Nav = () => {
       type: 'open',
       component: (
         <ConfirmationDialogModal
-          message={`Are you sure you want to delete current user (${username})?`}
+          message={`Are you sure you want to delete the current user (${username})?`}
           mutationOptions={{
             mutationFn: () => deleteUser(id),
             onSuccess: () => {

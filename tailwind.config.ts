@@ -5,7 +5,7 @@ export default {
   theme: {
     colors: {
       green: {
-        100: '#E9EDE8',
+        100: '#DFE5DC',
         200: '#C9D3C5',
         300: '#A9B8A3',
         400: '#889D80',

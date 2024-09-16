@@ -17,11 +17,11 @@ const Modal = () => {
   return (
     <div
       onClick={handleClose}
-      className="fixed h-screen w-full flex justify-center items-center bg-green-900 bg-opacity-40"
+      className="fixed h-screen w-full flex justify-center items-center bg-green-800 bg-opacity-40 z-10"
     >
       <section
         onClick={(e) => e.stopPropagation()}
-        className="bg-green-100 max-w-xl p-4 shadow-lg"
+        className="bg-green-100 max-w-xl shadow-lg"
       >
         {modalContent}
       </section>

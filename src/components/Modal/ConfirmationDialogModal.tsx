@@ -1,5 +1,6 @@
 import { MutationOptions, useMutation } from '@tanstack/react-query';
 import { MouseEvent } from 'react';
+import Button from '../Shared/Button';
 
 interface ConfirmationDialogModalProps {
   message: string;
@@ -21,9 +22,9 @@ const ConfirmationDialogModal = ({
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h2>{message}</h2>
-      <button onClick={handleClick}>{buttonText}</button>
+    <div className="flex flex-col p-4 gap-4 w-80">
+      <h2 className="text-lg">{message}</h2>
+      <Button onClick={handleClick}>{buttonText}</Button>
     </div>
   );
 };

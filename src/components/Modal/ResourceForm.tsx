@@ -15,9 +15,12 @@ import {
   FetchResourcesQueryUpdate
 } from '../../api/resources.api';
 import { useResourceSortContext } from '../../context/ResourceSortContext';
+import Button from '../Shared/Button';
+import InputSection from '../Shared/InputSection';
 
 interface ResourceFormProps {
-  displayName: string;
+  heading: string;
+  buttonLabel: string;
   mutationFn: (
     payload: Pick<Resource, 'value'>
   ) => Promise<Pick<Resource, 'id' | 'value' | 'created_at'>>;
@@ -30,7 +33,8 @@ interface ResourceFormProps {
 }
 
 const ResourceForm = ({
-  displayName,
+  heading,
+  buttonLabel,
   mutationFn,
   defaultValue,
   userData,
@@ -99,27 +103,26 @@ const ResourceForm = ({
 
   return (
     <>
-      <h2 className="text-2xl mb-4">{displayName}</h2>
-      <form onSubmit={handleFormSubmit} className="flex flex-col w-64">
+      <h2 className="text-xl p-4 bg-green-700 text-green-200">{heading}</h2>
+      <form onSubmit={handleFormSubmit} className="flex flex-col p-4 gap-4">
         {issueMessages.globalIssue && (
-          <p className="mb-4">{issueMessages.globalIssue}</p>
+          <p className="text-green-600 text-sm">{issueMessages.globalIssue}</p>
         )}
 
-        <label htmlFor="value">Value</label>
-        {issueMessages.value && <p>{issueMessages.value}</p>}
-        <input
-          className="mb-4"
+        <InputSection
+          label="Value"
           type="text"
           name="value"
           id="value"
           value={formData.value}
+          issue={issueMessages.value}
           onChange={(e) => setFormData({ ...formData, value: e.target.value })}
           {...(mutation.isPending && { disabled: true })}
         />
 
-        <button type="submit" {...(mutation.isPending && { disabled: true })}>
-          {displayName}
-        </button>
+        <Button {...(mutation.isPending && { disabled: true })}>
+          {buttonLabel}
+        </Button>
       </form>
     </>
   );
