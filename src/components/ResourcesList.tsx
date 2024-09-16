@@ -4,7 +4,7 @@ import { fetchCurrentUser } from '../api/users.api';
 import ResourceCard from './ResourceCard';
 import { useErrorContext } from '../context/ErrorContext';
 import { initialInfiniteQueryParams } from '../config/resources.config';
-import IntersectionTrigger from './IntersectionTrigger';
+import IntersectionTrigger from './Shared/IntersectionTrigger';
 import SortToggle from './SortToggle';
 import { useResourceSortContext } from '../context/ResourceSortContext';
 

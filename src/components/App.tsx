@@ -21,7 +21,7 @@ const App = () => {
       <ModalProvider>
         <ResourceSortProvider>
           <Modal />
-          <main className="p-4">
+          <main>
             <Nav />
             <ResourcesList />
           </main>

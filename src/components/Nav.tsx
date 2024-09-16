@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteUser, fetchCurrentUser } from '../api/users.api';
 import { useModalContext } from '../context/ModalContext';
-import { MouseEvent } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import SignUp from './Modal/SignUp';
 import { logOut } from '../api/sessions.api';
 import LogIn from './Modal/LogIn';
@@ -10,6 +10,15 @@ import NewResource from './Modal/NewResource';
 import ConfirmationDialogModal from './Modal/ConfirmationDialogModal';
 import { deleteCachedResourcesByUser } from '../api/resources.api';
 import { useResourceSortContext } from '../context/ResourceSortContext';
+import Button from './Shared/Button';
+
+const NavContainer = ({ children }: { children: ReactNode }) => {
+  return (
+    <nav className="p-4 border-b-4 border-green-900 flex flex-row gap-6 items-center">
+      {children}
+    </nav>
+  );
+};
 
 const Nav = () => {
   const { dispatch: modalDispatch } = useModalContext();
@@ -58,18 +67,18 @@ const Nav = () => {
 
   if (user.isPending) {
     return (
-      <nav>
+      <NavContainer>
         <h2>Loading user data...</h2>
-      </nav>
+      </NavContainer>
     );
   }
 
   if (!user.data) {
     return (
-      <nav>
-        <button onClick={handleSignUp}>Sign Up</button>
-        <button onClick={handleLogIn}>Log In</button>
-      </nav>
+      <NavContainer>
+        <Button onClick={handleSignUp}>Sign Up</Button>
+        <Button onClick={handleLogIn}>Log In</Button>
+      </NavContainer>
     );
   }
 
@@ -113,12 +122,16 @@ const Nav = () => {
   };
 
   return (
-    <nav>
-      <h2 title={id}>{username}</h2>
-      <button onClick={handleLogOut}>Log Out</button>
-      <button onClick={handleNewResource}>New Resource</button>
-      <button onClick={handleDeleteUser}>Delete User</button>
-    </nav>
+    <NavContainer>
+      <h2 className="font-bold text-xl" title={id}>
+        {username}
+      </h2>
+      <Button onClick={handleLogOut}>Log Out</Button>
+      <Button onClick={handleNewResource}>New Resource</Button>
+      <Button className="ml-auto" onClick={handleDeleteUser}>
+        Delete User
+      </Button>
+    </NavContainer>
   );
 };
 
