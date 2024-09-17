@@ -1,6 +1,7 @@
 import { MouseEvent } from 'react';
 import { useResourceSortContext } from '../context/ResourceSortContext';
 import { ResourceSort } from '../types/Resource';
+import Button from './Shared/Button';
 
 const SortToggle = () => {
   const { sort, dispatch: resourceSortDispatch } = useResourceSortContext();
@@ -20,11 +21,11 @@ const SortToggle = () => {
   };
 
   return (
-    <div className="flex flex-row">
-      <h3>Sort by:</h3>
-      <button onClick={toggleSort('created_at')}>
-        Date {sort.created_at.toUpperCase()}
-      </button>
+    <div className="flex flex-row items-center gap-4">
+      <h3>Sort by date </h3>
+      <Button onClick={toggleSort('created_at')}>
+        {sort.created_at.toUpperCase()}
+      </Button>
     </div>
   );
 };

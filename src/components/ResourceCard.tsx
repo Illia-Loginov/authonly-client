@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isForbidden, isUnauthenticated } from '../utils/apiErrors';
 import LogIn from './Modal/LogIn';
 import { useResourceSortContext } from '../context/ResourceSortContext';
+import Button from './Shared/Button';
+import { dateToLongString, dateToShortString } from '../utils/timeFormatting';
 
 interface ResourceCardProps {
   id: string;
@@ -14,7 +16,7 @@ interface ResourceCardProps {
   owner_id: string;
   owner_username: string;
   isOwner: boolean;
-  created_at: Date;
+  created_at: string;
 }
 
 const ResourceCard = ({
@@ -73,18 +75,28 @@ const ResourceCard = ({
     };
 
     resourceOperations = (
-      <>
-        <button onClick={handleEditResource}>Edit</button>
-        <button onClick={handleDeleteResource}>Delete</button>
-      </>
+      <div className="flex flex-row p-4 gap-4">
+        <Button className="flex-1" onClick={handleEditResource}>
+          Edit
+        </Button>
+        <Button className="flex-1" onClick={handleDeleteResource}>
+          Delete
+        </Button>
+      </div>
     );
   }
 
   return (
-    <div title={id}>
-      <p>{value}</p>
-      <sub>{owner_username + (isOwner ? ' (you)' : '')}</sub>
-      <sub>{created_at.toString()}</sub>
+    <div className="bg-green-100 h-48 flex flex-col">
+      <div className="text-sm flex flex-row justify-between items-center p-4 gap-4 bg-green-700 text-green-200">
+        <p {...(isOwner && { className: 'font-bold', title: 'You' })}>
+          {owner_username}
+        </p>
+        <p title={dateToLongString(new Date(created_at))}>
+          {dateToShortString(new Date(created_at))}
+        </p>
+      </div>
+      <p className="flex-1 p-4 overflow-y-auto break-words">{value}</p>
       {resourceOperations}
     </div>
   );

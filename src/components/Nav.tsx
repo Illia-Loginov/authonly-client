@@ -123,9 +123,7 @@ const Nav = () => {
 
   return (
     <NavContainer>
-      <h2 className="font-bold text-xl" title={id}>
-        {username}
-      </h2>
+      <h2 className="font-bold text-xl">{username}</h2>
       <Button onClick={handleLogOut}>Log Out</Button>
       <Button onClick={handleNewResource}>New Resource</Button>
       <Button className="ml-auto" onClick={handleDeleteUser}>

@@ -1,7 +1,7 @@
 export interface Resource {
   id: string;
   value: string;
-  created_at: Date;
+  created_at: string;
   owner_id: string;
   owner_username: string;
 }

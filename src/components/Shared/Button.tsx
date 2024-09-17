@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 
 interface ButtonProps {
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  children?: string;
+  children?: string | string[];
   className?: string;
   disabled?: boolean;
 }

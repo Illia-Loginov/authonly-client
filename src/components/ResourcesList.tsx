@@ -70,20 +70,26 @@ const ResourcesList = () => {
   }
 
   return (
-    <section>
-      <h1 className="text-3xl">Resources</h1>
-      <SortToggle />
-      {resources.map((resource) => (
-        <ResourceCard
-          key={resource.id}
-          id={resource.id}
-          value={resource.value}
-          owner_id={resource.owner_id}
-          owner_username={resource.owner_username}
-          isOwner={!user.isPending && user.data?.id === resource.owner_id}
-          created_at={resource.created_at}
-        />
-      ))}
+    <section className="p-4">
+      <div className="flex flex-row justify-between items-center mb-4">
+        <h1 className="text-3xl uppercase font-bold">Resources</h1>
+        <SortToggle />
+      </div>
+      {resources.length && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {resources.map((resource) => (
+            <ResourceCard
+              key={resource.id}
+              id={resource.id}
+              value={resource.value}
+              owner_id={resource.owner_id}
+              owner_username={resource.owner_username}
+              isOwner={!user.isPending && user.data?.id === resource.owner_id}
+              created_at={resource.created_at}
+            />
+          ))}
+        </div>
+      )}
       {nextElements}
     </section>
   );
