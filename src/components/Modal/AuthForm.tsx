@@ -3,7 +3,7 @@ import { User } from '../../types/User';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isBadRequest, isUnauthenticated } from '../../utils/apiErrors';
 import { useModalContext } from '../../context/ModalContext';
-import { toCapitalized } from '../../utils/stringDisplayFormatting';
+import { toCapitalized } from '../../utils/stringFormatting';
 import { useErrorContext } from '../../context/ErrorContext';
 import Button from '../Shared/Button';
 import InputSection from '../Shared/InputSection';

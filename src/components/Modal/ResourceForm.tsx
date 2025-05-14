@@ -8,7 +8,7 @@ import {
   isForbidden,
   isUnauthenticated
 } from '../../utils/apiErrors';
-import { toCapitalized } from '../../utils/stringDisplayFormatting';
+import { toCapitalized } from '../../utils/stringFormatting';
 import LogIn from './LogIn';
 import {
   FetchResourcesQueryKey,
